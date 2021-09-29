@@ -23,7 +23,7 @@ class CloudCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 64.0),
+                padding: const EdgeInsets.only(top: 92.0),
                 child: Container(
                   width: 256,
                   child: const Text(
