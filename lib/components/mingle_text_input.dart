@@ -5,15 +5,18 @@ class MingleTextInput extends StatelessWidget {
   Icon icon;
   TextInputType? keyboardType;
   TextEditingController? controller;
+  FormFieldValidator? validator;
 
-  MingleTextInput({required this.label, required this.icon, this.keyboardType, this.controller});
+  MingleTextInput({required this.label, required this.icon, this.keyboardType, this.controller, this.validator});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       child: Container(
-        child: TextField(
+        child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: validator,
           controller: controller,
           keyboardType: keyboardType,
           cursorColor: Colors.deepOrangeAccent,

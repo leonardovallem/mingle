@@ -40,6 +40,7 @@ class CloudCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: DiamondButton(
+                  icon: Icon(Icons.arrow_upward_rounded),
                   onClick: () {
                     Navigator.pushNamed(context, "/login");
                   },

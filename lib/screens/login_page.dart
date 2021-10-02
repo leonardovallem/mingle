@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/model/user.dart';
+import 'package:projects/util/no_glow_scroll.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,32 +37,75 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Expanded(
               child: Align(
-                alignment: Alignment.topCenter,
-                child: ScrollConfiguration(
-                  behavior: NoScrollGlow(),
-                  child: ListView(
-                    children: [
-                      if (_isRegister)
-                        MingleTextInput(
-                          label: "Username",
-                          icon: Icon(Icons.account_circle),
-                          controller: _usernameController,
-                        ),
-                      MingleTextInput(
-                        label: "Email",
-                        icon: Icon(Icons.email),
-                        keyboardType: TextInputType.emailAddress,
-                        controller: _emailController,
-                      ),
-                      MingleTextInput(
-                        label: "Senha",
-                        icon: Icon(Icons.password),
-                        controller: _passwordController,
-                      ),
-                    ],
+            alignment: Alignment.topCenter,
+            child: ScrollConfiguration(
+              behavior: NoScrollGlow(),
+              child: ListView(
+                children: [
+                  if (_isRegister) MingleTextInput(
+                      label: "Username",
+                      icon: Icon(Icons.account_circle),
+                      controller: _usernameController,
+                      validator: (value) {
+                        if (value.length < 5) {
+                          return "O username precisa conter ao menos 5 digitos";
+                        }
+                      },
+                    ),
+                  MingleTextInput(
+                    label: "Email",
+                    icon: Icon(Icons.email),
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                    validator: (value) {
+                      if (!value!.contains("@") || !value.contains(".")) {
+                        return "O email fornecido é inválido";
+                      }
+                    },
                   ),
-                ),
-              )),
+                  MingleTextInput(
+                    label: "Senha",
+                    icon: Icon(Icons.password),
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value.length < 7) {
+                        return "A senha precisa conter ao menos 7 dígitos";
+                      }
+
+                      bool containsLetter = false;
+                      bool containsNumber = false;
+
+                      for (int i = 0; i < value.length; i++) {
+                        if (!containsLetter) {
+                          for (int n = 0; n < 26; n++) {
+                            if (String.fromCharCode(value.codeUnitAt(i)) ==
+                                String.fromCharCode('a'.codeUnitAt(0) + n)) {
+                              containsLetter = true;
+                              break;
+                            }
+                          }
+                        }
+                        if (!containsNumber) {
+                          for (int n = 0; n < 10; n++) {
+                            if (String.fromCharCode(value.codeUnitAt(i)) ==
+                                n.toString()) {
+                              containsNumber = true;
+                              break;
+                            }
+                          }
+                        }
+                        if (containsLetter && containsNumber) break;
+                      }
+
+                      if (!containsLetter || !containsNumber) {
+                        return "A senha precisa conter letras e números";
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          )),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -90,6 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
+
+                  Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
                 },
               ),
             ],
@@ -100,10 +146,3 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class NoScrollGlow extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(BuildContext context, Widget child,
-      AxisDirection axisDirection) {
-    return child;
-  }
-}

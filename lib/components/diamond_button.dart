@@ -1,35 +1,40 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class DiamondButton extends StatelessWidget {
   VoidCallback onClick;
+  Icon icon;
 
-  DiamondButton({required this.onClick});
+  DiamondButton({required this.onClick, required this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 64,
-      height: 64,
-      child: Transform(
-        alignment: Alignment.center,
-        transform: Matrix4.rotationZ(
-          pi / 4,
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.rotationZ(
+        pi / 4,
+      ),
+      child: Container(
+        width: 64,
+        height: 64,
+        decoration: BoxDecoration(
+          color: Colors.deepOrangeAccent,
+          borderRadius: BorderRadius.circular(24.0),
         ),
-        child: ElevatedButton(
-          onPressed: onClick,
-          child: Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.rotationZ(
-              pi / 4,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onClick,
+            child: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationZ(
+                pi / 4,
+              ),
+              child: icon,
             ),
-            child: const Icon(Icons.arrow_upward_rounded),
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.deepOrangeAccent,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(24.0)),
-            ),
+            borderRadius: BorderRadius.circular(24.0),
+            splashColor: Colors.white,
           ),
         ),
       ),
