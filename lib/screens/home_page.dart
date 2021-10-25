@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:projects/components/action_bar.dart';
+import 'package:projects/components/category_picker.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/category_chip.dart';
 import 'package:projects/components/mingle_text_input.dart';
@@ -55,16 +56,7 @@ class PortraitHomeLayout extends StatelessWidget {
           MingleTextInput(label: "Pesquisar", icon: Icon(Icons.search)),
           SizedBox(
             height: 62,
-            child: ScrollConfiguration(
-              behavior: NoScrollGlow(),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, position) {
-                  return CategoryChip(label: categories[position]);
-                },
-                itemCount: categories.length,
-              ),
-            ),
+            child: CategoryPicker(categories),
           ),
           Expanded(
             child: ScrollConfiguration(
@@ -126,17 +118,8 @@ class LandscapeHomeLayout extends StatelessWidget {
                 MingleTextInput(label: "Pesquisar", icon: Icon(Icons.search)),
                 SizedBox(
                   height: 62,
-                  child: ScrollConfiguration(
-                    behavior: NoScrollGlow(),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, position) {
-                        return CategoryChip(label: categories[position]);
-                      },
-                      itemCount: categories.length,
-                    ),
+                  child: CategoryPicker(categories),
                   ),
-                ),
               ],
             ),
           ),
