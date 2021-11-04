@@ -48,8 +48,13 @@ class RecipeVerticalCard extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
-                    child:
-                        Image.network("https://picsum.photos/250", width: 200),
+                    child: Image.network(
+                      recipe.photo ??
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2bXeJvIwzAID0OWX097nzXmEtiBWLKUH7Fg&usqp=CAU",
+                      fit: BoxFit.cover,
+                      width: 200,
+                      height: 200,
+                    ),
                   ),
                 ),
                 Padding(

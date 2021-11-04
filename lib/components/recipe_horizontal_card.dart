@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:projects/components/mingle_snackbar.dart';
 import 'package:projects/model/recipe.dart';
 
 class RecipeHorizontalCard extends StatelessWidget {
@@ -13,19 +14,7 @@ class RecipeHorizontalCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(recipe.name,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400)),
-            behavior: SnackBarBehavior.floating,
-            padding: EdgeInsets.all(16.0),
-            margin: EdgeInsets.all(12.0),
-            backgroundColor: Color(0xFFFDAAAA),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0)),
-          ),
+          MingleSnackbar(recipe.name),
         );
       },
       child: Padding(

@@ -26,7 +26,6 @@ class _CategoryPickerState extends State<CategoryPicker> {
             label: widget.categories[position],
             onTap: () {
               setState(() => _selected = position);
-              print(position.toString() + " / " + _selected.toString());
             },
             active: position == _selected,
           );

@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:projects/components/mingle_large_button.dart';
+import 'package:projects/components/mingle_snackbar.dart';
 import 'package:projects/components/mingle_text_input.dart';
+import 'package:projects/config/authentication.dart';
+import 'package:projects/dao/user_dao.dart';
 import 'package:projects/model/user.dart';
 import 'package:projects/util/no_glow_scroll.dart';
 
@@ -42,11 +46,14 @@ class _LoginPageState extends State<LoginPage> {
               behavior: NoScrollGlow(),
               child: ListView(
                 children: [
-                  if (_isRegister) MingleTextInput(
+                  if (_isRegister)
+                    MingleTextInput(
                       label: "Username",
                       icon: Icon(Icons.account_circle),
                       controller: _usernameController,
                       validator: (value) {
+                        if(!_isRegister) return null;
+
                         if (value.length < 5) {
                           return "O username precisa conter ao menos 5 digitos";
                         }
@@ -58,6 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
                     validator: (value) {
+                      if(!_isRegister) return null;
+
                       if (!value!.contains("@") || !value.contains(".")) {
                         return "O email fornecido é inválido";
                       }
@@ -68,6 +77,8 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icon(Icons.password),
                     controller: _passwordController,
                     validator: (value) {
+                      if(!_isRegister) return null;
+
                       if (value.length < 7) {
                         return "A senha precisa conter ao menos 7 dígitos";
                       }
@@ -128,15 +139,56 @@ class _LoginPageState extends State<LoginPage> {
               ),
               MingleLargeButton(
                 label: _isRegister ? "Cadastrar" : "Login",
-                onClick: () {
+                onClick: () async {
                   User user = User(
                     username: _isRegister ? _usernameController.text : null,
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
 
-                  Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+                  User? found = await findUser(user.email);
+                  if(_isRegister) {
+                    if(found != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Usuário fornecido já existe"));
+                      return;
+                    }
+                    await createUserAndAuthenticate(user);
+                  } else {
+                    if(found == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Usuário não encontrado"));
+                      return;
+                    }
+                    await findUserAndAuthenticate(user);
+                  }
+
+                  if(await isAuthenticated()) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/home", (route) => false);
+                    return;
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Credenciais incorretas"));
                 },
+              ),
+              InkWell(
+                onTap: () => Navigator.pushNamedAndRemoveUntil(
+                    context, "/home", (route) => false),
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Text("ou "),
+                      Text(
+                        "continuar sem uma conta",
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -145,4 +197,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

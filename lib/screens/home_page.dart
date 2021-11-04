@@ -9,6 +9,7 @@ import 'package:projects/components/category_chip.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/components/recipe_horizontal_card.dart';
 import 'package:projects/components/recipe_vertical_card.dart';
+import 'package:projects/dao/recipes_dao.dart';
 import 'package:projects/model/recipe.dart';
 import 'package:projects/util/no_glow_scroll.dart';
 
@@ -25,18 +26,27 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MingleScaffold(
-      body: MediaQuery.of(context).size.width > 600 ||
-              MediaQuery.of(context).orientation == Orientation.landscape
-          ? LandscapeHomeLayout(categories)
-          : PortraitHomeLayout(categories),
+      body: FutureBuilder(
+        future: savedRecipes(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          List<Recipe> recipes = snapshot.data as List<Recipe>;
+
+          return MediaQuery.of(context).size.width > 600 ||
+                  MediaQuery.of(context).orientation == Orientation.landscape
+              ? LandscapeHomeLayout(recipes, categories)
+              : PortraitHomeLayout(recipes, categories);
+        },
+      ),
     );
   }
 }
 
 class PortraitHomeLayout extends StatelessWidget {
+  List<Recipe> recipes;
   List<String> categories;
 
-  PortraitHomeLayout(this.categories);
+  PortraitHomeLayout(this.recipes, this.categories);
 
   @override
   Widget build(BuildContext context) {
@@ -61,29 +71,12 @@ class PortraitHomeLayout extends StatelessWidget {
           Expanded(
             child: ScrollConfiguration(
               behavior: NoScrollGlow(),
-              child: ListView(
+              child: ListView.builder(
+                itemCount: recipes.length,
                 clipBehavior: Clip.none,
                 scrollDirection: Axis.horizontal,
-                children: [
-                  RecipeVerticalCard(
-                      recipe: Recipe(
-                    name: "Sopa de Couve",
-                    publisher: "_jaum_jaum",
-                    averageRating: 4.8,
-                  )),
-                  RecipeVerticalCard(
-                      recipe: Recipe(
-                    name: "Angu frito",
-                    publisher: "_annxrchism",
-                    averageRating: 2.7,
-                  )),
-                  RecipeVerticalCard(
-                      recipe: Recipe(
-                    name: "Arroz de Macarrão",
-                    publisher: "mlkcabral",
-                    averageRating: 5.1,
-                  )),
-                ],
+                itemBuilder: (context, index) =>
+                    RecipeVerticalCard(recipe: recipes[index]),
               ),
             ),
           )
@@ -94,9 +87,10 @@ class PortraitHomeLayout extends StatelessWidget {
 }
 
 class LandscapeHomeLayout extends StatelessWidget {
+  List<Recipe> recipes;
   List<String> categories;
 
-  LandscapeHomeLayout(this.categories);
+  LandscapeHomeLayout(this.recipes, this.categories);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +113,7 @@ class LandscapeHomeLayout extends StatelessWidget {
                 SizedBox(
                   height: 62,
                   child: CategoryPicker(categories),
-                  ),
+                ),
               ],
             ),
           ),
