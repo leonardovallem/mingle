@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projects/components/diamond_button.dart';
+import 'package:projects/components/mingle_snackbar.dart';
+
+import 'flat_text.dart';
 
 class ActionBar extends StatelessWidget {
   @override
@@ -27,7 +30,38 @@ class ActionBar extends StatelessWidget {
           ),
           const Spacer(),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(onPressed: () {
+                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                              Navigator.pushNamed(context, "/add/ingredient");
+                            }, child: FlatText("Ingrediente")),
+                          )),
+                          Expanded(child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(onPressed: () {
+                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                              Navigator.pushNamed(context, "/add/recipe");
+                            }, child: FlatText("Receita")),
+                          )),
+                        ],
+                      ),
+                      Text("Deslize para baixo para cancelar")
+                    ],
+                  ),
+                  duration: Duration(days: 999),
+                ));
+              },
               icon: const Icon(
                 Icons.add,
                 size: 32.0,

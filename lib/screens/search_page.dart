@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/components/ingredients_list.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 
@@ -16,8 +18,9 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return MingleScaffold(
       hideActionBar: true,
+      title: "Encontrar receitas",
       body: Padding(
-        padding: const EdgeInsets.only(top: 64.0),
+        padding: const EdgeInsets.only(top: 80.0),
         child: Column(
           children: [
             SearchOption(
@@ -38,20 +41,7 @@ class _SearchPageState extends State<SearchPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: _searchMethod == SearchMethod.insertNewIngredients
-                    ? Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: Color(0x33AA4400)),
-                        child: ListView(
-                          children: const [
-                            Center(
-                              child: Text("Em breve", style: TextStyle(
-                                fontSize: 24.0
-                              )),
-                            )
-                          ],
-                        ),
-                      )
+                    ? IngredientsList()
                     : null,
               ),
             ),

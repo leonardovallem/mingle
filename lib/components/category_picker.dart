@@ -18,7 +18,7 @@ class _CategoryPickerState extends State<CategoryPicker> {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: NoScrollGlow(),
+      behavior: NoGlowScroll(),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, position) {

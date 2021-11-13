@@ -4,6 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:projects/components/mingle_snackbar.dart';
 import 'package:projects/model/recipe.dart';
 
+import 'flat_text.dart';
+
 class RecipeHorizontalCard extends StatelessWidget {
   Recipe recipe;
 
@@ -14,7 +16,7 @@ class RecipeHorizontalCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
-          MingleSnackbar(recipe.name),
+          MingleSnackbar(content: FlatText(recipe.name)),
         );
       },
       child: Padding(

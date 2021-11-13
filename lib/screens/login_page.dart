@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Align(
             alignment: Alignment.topCenter,
             child: ScrollConfiguration(
-              behavior: NoScrollGlow(),
+              behavior: NoGlowScroll(),
               child: ListView(
                 children: [
                   if (_isRegister)
@@ -65,8 +65,6 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
                     validator: (value) {
-                      if(!_isRegister) return null;
-
                       if (!value!.contains("@") || !value.contains(".")) {
                         return "O email fornecido é inválido";
                       }
@@ -149,13 +147,13 @@ class _LoginPageState extends State<LoginPage> {
                   User? found = await findUser(user.email);
                   if(_isRegister) {
                     if(found != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Usuário fornecido já existe"));
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário fornecido já existe")));
                       return;
                     }
                     await createUserAndAuthenticate(user);
                   } else {
                     if(found == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Usuário não encontrado"));
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário não encontrado")));
                       return;
                     }
                     await findUserAndAuthenticate(user);
@@ -167,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
 
-                  ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar("Credenciais incorretas"));
+                  ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Credenciais incorretas")));
                 },
               ),
               InkWell(

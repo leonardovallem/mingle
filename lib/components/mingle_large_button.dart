@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class MingleLargeButton extends StatelessWidget {
   String label;
   VoidCallback onClick;
+  Color? color;
+  IconData? icon;
 
-  MingleLargeButton({required this.label, required this.onClick});
+  MingleLargeButton({required this.label, required this.onClick, this.color, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +17,26 @@ class MingleLargeButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onClick,
           style: ElevatedButton.styleFrom(
-            primary: Colors.pinkAccent,
+            primary: color ?? Colors.pinkAccent,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
-            child: Text(label, style: const TextStyle(fontSize: 18.0)),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if(icon != null) Spacer(),
+                if(icon != null) Icon(icon),
+                if(icon != null) Spacer(),
+                if(icon != null) Spacer(),
+                Text(label, style: const TextStyle(fontSize: 18.0)),
+                if(icon != null) Spacer(),
+              ],
+            ),
           ),
         ),
       ),

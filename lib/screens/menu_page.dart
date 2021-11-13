@@ -21,7 +21,7 @@ class MenuPage extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: [
-                      ProfileListItem(),
+                      ProfileListItem(snapshot.data == true),
                       ListItem(
                         title: Text("Sobre"),
                         onClick: () => Navigator.pushNamed(context, "/about"),
@@ -52,7 +52,9 @@ class MenuPage extends StatelessWidget {
 }
 
 class ProfileListItem extends StatelessWidget {
-  bool authenticated = false;
+  bool authenticated;
+
+  ProfileListItem(this.authenticated);
 
   @override
   Widget build(BuildContext context) {

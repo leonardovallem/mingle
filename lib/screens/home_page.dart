@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:projects/components/action_bar.dart';
 import 'package:projects/components/category_picker.dart';
 import 'package:projects/components/mingle_scaffold.dart';
-import 'package:projects/components/category_chip.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/components/recipe_horizontal_card.dart';
 import 'package:projects/components/recipe_vertical_card.dart';
@@ -70,7 +67,7 @@ class PortraitHomeLayout extends StatelessWidget {
           ),
           Expanded(
             child: ScrollConfiguration(
-              behavior: NoScrollGlow(),
+              behavior: NoGlowScroll(),
               child: ListView.builder(
                 itemCount: recipes.length,
                 clipBehavior: Clip.none,
@@ -98,7 +95,7 @@ class LandscapeHomeLayout extends StatelessWidget {
       children: [
         Expanded(
           child: ScrollConfiguration(
-            behavior: NoScrollGlow(),
+            behavior: NoGlowScroll(),
             child: ListView(
               children: [
                 const Center(
@@ -123,7 +120,7 @@ class LandscapeHomeLayout extends StatelessWidget {
             children: [
               Expanded(
                 child: ScrollConfiguration(
-                  behavior: NoScrollGlow(),
+                  behavior: NoGlowScroll(),
                   child: ListView(
                     clipBehavior: Clip.none,
                     children: [
