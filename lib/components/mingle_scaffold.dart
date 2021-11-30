@@ -7,8 +7,9 @@ class MingleScaffold extends StatelessWidget {
   Widget? body;
   bool? hideActionBar;
   String? title;
+  List<Widget> appBarActions;
 
-  MingleScaffold({this.body, this.hideActionBar, this.title});
+  MingleScaffold({this.body, this.hideActionBar, this.title, this.appBarActions = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class MingleScaffold extends StatelessWidget {
           fontSize: 24,
           color: Colors.black,
         ),
+        actions: appBarActions,
         backgroundColor: Colors.transparent,
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

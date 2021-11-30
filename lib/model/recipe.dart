@@ -1,3 +1,5 @@
+import 'package:projects/model/dto/recipe_dto.dart';
+
 class Recipe {
   String? id;
   String name;
@@ -14,6 +16,14 @@ class Recipe {
     this.ratings = 0,
     required this.averageRating,
   });
+
+  static Recipe fromDTO(RecipeDTO dto) => Recipe(
+        name: dto.name,
+        publisher: dto.creatorId,
+        averageRating: 0,
+        photo: dto.picture,
+        id: dto.id,
+      );
 
   Map<String, dynamic> toMap() => {
         "_id": id,

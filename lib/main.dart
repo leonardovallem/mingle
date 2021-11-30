@@ -10,6 +10,8 @@ import 'screens/home_page.dart';
 import 'screens/landing_page.dart';
 import 'screens/login_page.dart';
 import 'screens/menu_page.dart';
+import 'screens/my_ingredients_page.dart';
+import 'screens/my_recipes_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/search_page.dart';
 
@@ -71,6 +73,8 @@ class MingleApplication extends StatelessWidget {
             "/profile": (context) => ProfilePage(),
             "/add/ingredient": (context) => AddIngredientPage(),
             "/add/recipe": (context) => AddRecipePage(),
+            "/my/ingredients": (context) => MyIngredientsPage(),
+            "/my/recipes": (context) => MyRecipesPage(),
           },
           theme: ThemeData(
             fontFamily: "Quicksand",

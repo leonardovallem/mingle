@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projects/model/ingredient.dart';
+import 'package:projects/model/used_ingredient.dart';
 
 class IngredientIndicator extends StatelessWidget {
-  Ingredient ingredient;
+  UsedIngredient usedIngredient;
 
-  IngredientIndicator(this.ingredient);
+  IngredientIndicator(this.usedIngredient);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class IngredientIndicator extends StatelessWidget {
               margin: EdgeInsets.only(right: 8),
               padding: EdgeInsets.all(10),
               child: Text(
-                ingredient.name,
+                usedIngredient.ingredient,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -42,7 +42,7 @@ class IngredientIndicator extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
-              "${ingredient.amount}${ingredient.measurementUnit}",
+              "${usedIngredient.amount}${usedIngredient.measurementUnit}",
               style: TextStyle(fontSize: 20),
             ),
           ),

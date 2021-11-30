@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MingleDropdownButton extends StatelessWidget {
+class MingleDropdownButton extends StatefulWidget {
+  TextEditingController controller;
   String label;
   IconData? icon;
 
-  MingleDropdownButton({required this.label, this.icon});
+  MingleDropdownButton({required this.label, this.icon, required this.controller});
 
+  @override
+  State<MingleDropdownButton> createState() => _MingleDropdownButtonState();
+}
+
+class _MingleDropdownButtonState extends State<MingleDropdownButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       child: Container(
         width: double.infinity,
         child: PopupMenuButton(
@@ -17,32 +23,62 @@ class MingleDropdownButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           itemBuilder: (BuildContext context) => [
-            const PopupMenuItem(
-              child: ListTile(
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "u";
+                setState(() => widget.label = "Unidades");
+              },
+              child: const ListTile(
+                leading: Text("u"),
+                title: Text('Unidades'),
+              ),
+            ),
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "g";
+                setState(() => widget.label = "Gramas");
+              },
+              child: const ListTile(
                 leading: Text("g"),
                 title: Text('Gramas'),
               ),
             ),
-            const PopupMenuItem(
-              child: ListTile(
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "kg";
+                setState(() => widget.label = "Kilogramas");
+              },
+              child: const ListTile(
                 leading: Text("kg"),
                 title: Text('Kilogramas'),
               ),
             ),
-            const PopupMenuItem(
-              child: ListTile(
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "L";
+                setState(() => widget.label = "Litros");
+              },
+              child: const ListTile(
                 leading: Text("L"),
                 title: Text('Litros'),
               ),
             ),
-            const PopupMenuItem(
-              child: ListTile(
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "cp";
+                setState(() => widget.label = "Colheres de sopa");
+              },
+              child: const ListTile(
                 leading: Text("cp"),
-                title: Text('Colheres de Sopa'),
+                title: Text('Colheres de sopa'),
               ),
             ),
-            const PopupMenuItem(
-              child: ListTile(
+            PopupMenuItem(
+              onTap: () {
+                widget.controller.text = "cc";
+                setState(() => widget.label = "Colheres de chá");
+              },
+              child: const ListTile(
                 leading: Text("cc"),
                 title: Text('Colheres de chá'),
               ),
@@ -57,13 +93,13 @@ class MingleDropdownButton extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(icon, color: Colors.grey),
+                  child: Icon(widget.icon, color: Colors.grey),
                 ),
                 Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                  label,
+                  widget.label,
                   style: const TextStyle(
                       fontSize: 16.0,
                       color: Color(0xDDAB7979),

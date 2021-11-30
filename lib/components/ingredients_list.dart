@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projects/components/ingredient_indicator.dart';
 import 'package:projects/components/new_ingredient_dialog.dart';
-import 'package:projects/model/ingredient.dart';
+import 'package:projects/model/used_ingredient.dart';
 import 'package:projects/util/no_glow_scroll.dart';
+
 import 'mingle_large_button.dart';
 
 class IngredientsList extends StatefulWidget {
@@ -13,7 +14,7 @@ class IngredientsList extends StatefulWidget {
 }
 
 class _IngredientsListState extends State<IngredientsList> {
-  List<Ingredient> _ingredients = [];
+  List<UsedIngredient> _ingredients = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,8 @@ class _IngredientsListState extends State<IngredientsList> {
               icon: Icons.add,
               onClick: () => showDialog(
                 context: context,
-                builder: (context) => NewIngredientDialog(_ingredients, update: () => setState(() {})),
+                builder: (context) => NewIngredientDialog(_ingredients,
+                    update: () => setState(() {})),
               ),
               color: Colors.black26,
             ),

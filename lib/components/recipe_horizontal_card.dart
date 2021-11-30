@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:projects/components/mingle_snackbar.dart';
-import 'package:projects/model/recipe.dart';
-
-import 'flat_text.dart';
+import 'package:projects/config/toggles.dart';
+import 'package:projects/model/dto/recipe_dto.dart';
+import 'package:projects/screens/recipe_page.dart';
 
 class RecipeHorizontalCard extends StatelessWidget {
-  Recipe recipe;
+  RecipeDTO recipe;
 
   RecipeHorizontalCard({required this.recipe});
 
@@ -15,9 +14,8 @@ class RecipeHorizontalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          MingleSnackbar(content: FlatText(recipe.name)),
-        );
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => RecipePage(recipe)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -36,7 +34,8 @@ class RecipeHorizontalCard extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0),
+                  padding: const EdgeInsets.only(
+                      left: 16.0, top: 16.0, bottom: 16.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Image.network(
@@ -56,15 +55,16 @@ class RecipeHorizontalCard extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(recipe.publisher,
+                        child: Text(recipe.creatorId,
                             style: const TextStyle(color: Colors.grey)),
                       ),
-                      RatingBarIndicator(
-                        itemSize: 32.0,
-                        rating: recipe.averageRating,
-                        itemBuilder: (context, _) =>
-                            const Icon(Icons.star, color: Colors.amber),
-                      )
+                      if (Toggles.ratingsActive)
+                        RatingBarIndicator(
+                          itemSize: 32.0,
+                          rating: 0,
+                          itemBuilder: (context, _) =>
+                              const Icon(Icons.star, color: Colors.amber),
+                        )
                     ],
                   ),
                 ),

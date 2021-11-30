@@ -32,7 +32,7 @@ class ActionBar extends StatelessWidget {
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

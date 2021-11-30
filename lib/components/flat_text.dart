@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class FlatText extends StatelessWidget {
   String text;
 
+
   FlatText(this.text);
 
   @override

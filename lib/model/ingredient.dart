@@ -1,14 +1,24 @@
-import 'package:flutter/material.dart';
+import 'package:projects/util/list_items_controller.dart';
 
-class Ingredient extends StatelessWidget {
+class Ingredient {
   String name;
-  double amount;
-  String measurementUnit;
 
-  Ingredient({required this.name, required this.amount, required this.measurementUnit});
+  Ingredient(this.name);
+
+  Map<String, dynamic> toMap() => {
+    "name": name,
+  };
+
+  static Ingredient fromMap(Map<String, dynamic> ingredient) => Ingredient(ingredient["name"]);
 
   @override
-  Widget build(BuildContext context) {
-    return Container();
+  String toString() {
+    return name;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    Ingredient obj = other as Ingredient;
+    return obj.name == name;
   }
 }

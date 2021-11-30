@@ -3,9 +3,12 @@ import 'package:projects/components/mingle_dropdown_button.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/mingle_text_input.dart';
+import 'package:projects/dao/owned_ingredients_dao.dart';
+import 'package:projects/model/owned_ingredient.dart';
 import 'package:projects/util/no_glow_scroll.dart';
 
-List<Widget> AddIngredientContent(context, {nameController, amountController}) {
+List<Widget> AddIngredientContent(context,
+    {nameController, amountController, measurementUnitController}) {
   return [
     MingleTextInput(
       label: "Nome",
@@ -21,13 +24,16 @@ List<Widget> AddIngredientContent(context, {nameController, amountController}) {
     MingleDropdownButton(
       label: "Unidade",
       icon: Icons.local_drink,
+      controller: measurementUnitController,
     ),
   ];
 }
 
 class AddIngredientPage extends StatelessWidget {
-  final TextEditingController _nameController = new TextEditingController();
-  final TextEditingController _amountController = new TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _measurementUnitController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +52,24 @@ class AddIngredientPage extends StatelessWidget {
                     context,
                     nameController: _nameController,
                     amountController: _amountController,
+                    measurementUnitController: _measurementUnitController,
                   ),
                 ),
               ),
             ),
           ),
-          MingleLargeButton(label: "Adicionar", onClick: () {
-            Navigator.pop(context);
-          }),
+          MingleLargeButton(
+              label: "Adicionar",
+              onClick: () async {
+                OwnedIngredient ingredient = OwnedIngredient(
+                  ingredient: _nameController.text,
+                  amount: double.parse(_amountController.text),
+                  measurementUnit: _measurementUnitController.text,
+                  owner: "",
+                );
+                saveOwnedIngredient(ingredient);
+                Navigator.pop(context);
+              }),
         ],
       ),
     );

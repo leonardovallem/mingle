@@ -23,6 +23,10 @@ class MenuPage extends StatelessWidget {
                     children: [
                       ProfileListItem(snapshot.data == true),
                       ListItem(
+                        title: Text("Meus ingredientes"),
+                        onClick: () => Navigator.pushNamed(context, "/my/ingredients"),
+                      ),
+                      ListItem(
                         title: Text("Sobre"),
                         onClick: () => Navigator.pushNamed(context, "/about"),
                       )

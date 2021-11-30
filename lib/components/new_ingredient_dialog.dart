@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:projects/model/ingredient.dart';
+import 'package:projects/model/used_ingredient.dart';
 import 'package:projects/screens/add_ingredient_page.dart';
 
 class NewIngredientDialog extends StatelessWidget {
-  List<Ingredient> ingredients;
+  List<UsedIngredient> ingredients;
   VoidCallback? update;
 
-  final TextEditingController _nameController = new TextEditingController();
-  final TextEditingController _amountController = new TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _measurementUnitController = TextEditingController();
 
   NewIngredientDialog(this.ingredients, {this.update});
 
@@ -21,6 +22,7 @@ class NewIngredientDialog extends StatelessWidget {
             context,
             nameController: _nameController,
             amountController: _amountController,
+              measurementUnitController: _measurementUnitController
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -39,10 +41,10 @@ class NewIngredientDialog extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: OutlinedButton(
                   onPressed: () {
-                    ingredients.add(Ingredient(
-                      name: _nameController.text,
+                    ingredients.add(UsedIngredient(
+                      ingredient: _nameController.text,
                       amount: double.parse(_amountController.text),
-                      measurementUnit: "",
+                      measurementUnit: _measurementUnitController.text,
                     ));
 
                     if (update != null) update!();

@@ -6,8 +6,18 @@ class MingleTextInput extends StatelessWidget {
   TextInputType? keyboardType;
   TextEditingController? controller;
   FormFieldValidator? validator;
+  int? maxLines;
+  ValueChanged<String>? onSubmitted;
 
-  MingleTextInput({required this.label, required this.icon, this.keyboardType, this.controller, this.validator});
+  MingleTextInput({
+    required this.label,
+    required this.icon,
+    this.keyboardType,
+    this.controller,
+    this.validator,
+    this.maxLines,
+    this.onSubmitted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +25,9 @@ class MingleTextInput extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       child: Container(
         child: TextFormField(
+          onFieldSubmitted: onSubmitted,
+          textInputAction: onSubmitted == null ?  TextInputAction.newline : TextInputAction.done,
+          maxLines: maxLines,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           controller: controller,
@@ -42,16 +55,14 @@ class MingleTextInput extends StatelessWidget {
             focusColor: Colors.deepOrangeAccent,
           ),
         ),
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.35),
-                spreadRadius: 5,
-                blurRadius: 20,
-                offset: Offset(0, 3),
-              )
-            ]
-        ),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.35),
+            spreadRadius: 5,
+            blurRadius: 20,
+            offset: Offset(0, 3),
+          )
+        ]),
       ),
     );
   }
