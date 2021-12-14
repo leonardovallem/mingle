@@ -93,7 +93,10 @@ class _PortraitHomeLayoutState extends State<PortraitHomeLayout> {
           MingleTextInput(
             label: "Pesquisar",
             icon: Icon(Icons.search),
-            onSubmitted: (value) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllRecipesPage())),
+            onSubmitted: (value) => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              print(value);
+              return AllRecipesPage(search: true, searchFor: value);
+            })),
           ),
           if (Toggles.categoriesActive)
             SizedBox(

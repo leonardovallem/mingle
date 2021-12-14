@@ -6,6 +6,7 @@ import 'package:projects/dao/user_dao.dart';
 import 'package:projects/model/dto/ingredient_dto.dart';
 import 'package:projects/model/dto/recipe_dto.dart';
 import 'package:projects/model/dto/registered_ingredient.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 
 const BASE_URI = "http://192.168.0.106:8080";
 const RECIPES = "receitas";
@@ -29,7 +30,7 @@ class RecipeAPI {
     if (response.statusCode != 200) return [];
 
     List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => RecipeDTO.fromMap(object)).toList();
+    return distinct(recipes);
   }
 
   static Future<List<RecipeDTO>> fetchByName(String name) async {
@@ -38,18 +39,20 @@ class RecipeAPI {
     if (response.statusCode != 200) return [];
 
     List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => RecipeDTO.fromMap(object)).toList();
+    return distinct(recipes);
   }
 
-  static Future<List<RecipeDTO>> fetchFromIngredients() async {
+  static Future<List<RecipeDTO>> fetchFromIngredients(List<UsedIngredientDTO>? ingredients) async {
     var user = await currentUsername();
-    final response = await get(Uri.parse(join(BASE_URI, RECIPES, REGISTERED_INGREDIENTS, user)));
-    print(response.body);
+    var response = ingredients == null
+        ? await get(Uri.parse(join(BASE_URI, RECIPES, REGISTERED_INGREDIENTS, user)))
+        : await get(Uri.parse(join(BASE_URI, RECIPES)),
+            headers: {"Content-Type": "application/json"}, body: jsonEncode(ingredients.map((e) => e.toMap()).toList()));
 
     if (response.statusCode != 200) return [];
 
     List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => RecipeDTO.fromMap(object)).toList();
+    return distinct(recipes);
   }
 
   static Future<Response> insert(RecipeDTO recipe) async {
@@ -58,6 +61,16 @@ class RecipeAPI {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(recipe.toMap()),
     );
+  }
+
+  static List<RecipeDTO> distinct(List<dynamic> recipes) {
+    var temp = {};
+    recipes.map((object) => RecipeDTO.fromMap(object)).forEach((object) {
+      if (!temp.containsKey(object.name)) temp.addAll({object.name: object});
+    });
+    List<RecipeDTO> list = [];
+    temp.forEach((key, value) => list.add(value));
+    return list;
   }
 }
 
@@ -75,8 +88,18 @@ class IngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => IngredientDTO.fromMap(object)).toList();
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
+  }
+
+  static Future<List<IngredientDTO>> fetchFromCurrentUser() async {
+    var user = await currentUsername();
+    final response = await get(Uri.parse(join(BASE_URI, INGREDIENTS, "?user=$user")));
+
+    if (response.statusCode != 200) return [];
+
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
   static Future<List<IngredientDTO>> fetchByName(String name) async {
@@ -84,8 +107,8 @@ class IngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => IngredientDTO.fromMap(object)).toList();
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
   static Future<Response> insert(String name) async {
@@ -111,8 +134,8 @@ class MeasuredIngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => IngredientDTO.fromMap(object)).toList();
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
   static Future<List<IngredientDTO>> fetchByName(String name) async {
@@ -120,8 +143,8 @@ class MeasuredIngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
-    return recipes.map((object) => IngredientDTO.fromMap(object)).toList();
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 }
 

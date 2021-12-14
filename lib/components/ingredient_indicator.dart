@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/config/toggles.dart';
-import 'package:projects/model/used_ingredient.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 
 class IngredientIndicator extends StatelessWidget {
-  UsedIngredient usedIngredient;
+  UsedIngredientDTO usedIngredient;
+  VoidCallback? onDelete;
 
-  IngredientIndicator(this.usedIngredient);
+  IngredientIndicator(this.usedIngredient, {this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class IngredientIndicator extends StatelessWidget {
               margin: EdgeInsets.only(right: 8),
               padding: EdgeInsets.all(10),
               child: Text(
-                usedIngredient.ingredient,
+                usedIngredient.ingredient.name,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -36,17 +37,19 @@ class IngredientIndicator extends StatelessWidget {
               ),
             ),
           ),
-          if(Toggles.partitionedIngredientsActive) Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Color(0xFFE0E0E0),
-              borderRadius: BorderRadius.circular(16),
+          if (Toggles.partitionedIngredientsActive)
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Color(0xFFE0E0E0),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                "${usedIngredient.quantity}${usedIngredient.unit}",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
-            child: Text(
-              "${usedIngredient.amount}${usedIngredient.measurementUnit}",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
+          IconButton(onPressed: onDelete, icon: Icon(Icons.remove, color: Colors.red))
         ],
       ),
     );

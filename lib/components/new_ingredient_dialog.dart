@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projects/model/used_ingredient.dart';
+import 'package:projects/config/toggles.dart';
+import 'package:projects/model/dto/ingredient_dto.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 import 'package:projects/screens/add_ingredient_page.dart';
 
 class NewIngredientDialog extends StatelessWidget {
-  List<UsedIngredient> ingredients;
+  List<UsedIngredientDTO> ingredients;
   VoidCallback? update;
 
   final TextEditingController _nameController = TextEditingController();
@@ -33,10 +35,10 @@ class NewIngredientDialog extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0),
             child: OutlinedButton(
               onPressed: () {
-                ingredients.add(UsedIngredient(
-                  ingredient: _nameController.text,
-                  amount: double.parse(_amountController.text),
-                  measurementUnit: _measurementUnitController.text,
+                ingredients.add(UsedIngredientDTO(
+                  ingredient: IngredientDTO(name: _nameController.text),
+                  quantity: Toggles.partitionedIngredientsActive ? double.parse(_amountController.text) : 0,
+                  unit: Toggles.partitionedIngredientsActive ? _measurementUnitController.text : "",
                 ));
 
                 if (update != null) update!();

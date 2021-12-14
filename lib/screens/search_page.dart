@@ -4,8 +4,10 @@ import 'package:projects/components/ingredients_list.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/model/dto/recipe_dto.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 import 'package:projects/networking/api.dart';
 import 'package:projects/screens/all_recipes_page.dart';
+import 'package:projects/util/list_items_controller.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -15,14 +17,13 @@ class SearchPage extends StatefulWidget {
 enum SearchMethod { useOwnIngredients, insertNewIngredients }
 
 class _SearchPageState extends State<SearchPage> {
+  final _controller = ListItemsController<UsedIngredientDTO>();
   SearchMethod? _searchMethod = SearchMethod.useOwnIngredients;
 
   @override
   Widget build(BuildContext context) {
     Future<List<RecipeDTO>> handleSearch() async {
-      return _searchMethod == SearchMethod.useOwnIngredients
-          ? RecipeAPI.fetchFromIngredients()
-          : RecipeAPI.fetchFromIngredients(); // TODO alterar
+      return RecipeAPI.fetchFromIngredients(_searchMethod == SearchMethod.useOwnIngredients ? null : _controller.items);
     }
 
     return MingleScaffold(
@@ -47,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _searchMethod == SearchMethod.insertNewIngredients ? IngredientsList() : null,
+                child: _searchMethod == SearchMethod.insertNewIngredients ? IngredientsList(controller: _controller) : null,
               ),
             ),
             MingleLargeButton(

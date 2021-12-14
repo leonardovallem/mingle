@@ -40,7 +40,7 @@ class RecipePage extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return IngredientIndicator(
-                      recipe.usedIngredients[index].parse(),
+                      recipe.usedIngredients[index],
                     );
                   },
                   itemCount: recipe.usedIngredients.length,

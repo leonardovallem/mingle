@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,12 +6,10 @@ import 'package:projects/components/checkbox_list_button.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/mingle_text_input.dart';
-import 'package:projects/dao/ingredients_dao.dart';
 import 'package:projects/dao/user_dao.dart';
 import 'package:projects/model/dto/ingredient_dto.dart';
 import 'package:projects/model/dto/recipe_dto.dart';
 import 'package:projects/model/dto/used_ingredient_dto.dart';
-import 'package:projects/model/ingredient.dart';
 import 'package:projects/networking/api.dart';
 import 'package:projects/networking/firebase.dart';
 import 'package:projects/util/list_items_controller.dart';
@@ -57,7 +53,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
               child: ScrollConfiguration(
             behavior: NoGlowScroll(),
             child: FutureBuilder(
-              future: savedIngredients(),
+              future: IngredientAPI.fetchFromCurrentUser(),
               builder: (context, snapshot) {
                 return ListView(
                   children: [
@@ -113,7 +109,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                           MaterialPageRoute(builder: (context) {
                             return CheckboxList(
                               title: "Ingredientes",
-                              items: (snapshot.data as List<Ingredient>).map((ing) => ing.toDTO()).toList(),
+                              items: snapshot.data as List<IngredientDTO>,
                               controller: _ingredientsController,
                               update: () => setState(() {}),
                             );

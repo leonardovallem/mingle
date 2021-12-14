@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MingleLargeButton extends StatelessWidget {
   String label;
-  VoidCallback onClick;
+  VoidCallback? onClick;
   Color? color;
   IconData? icon;
 

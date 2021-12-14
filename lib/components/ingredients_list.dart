@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:projects/components/ingredient_indicator.dart';
 import 'package:projects/components/new_ingredient_dialog.dart';
-import 'package:projects/model/used_ingredient.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
+import 'package:projects/util/list_items_controller.dart';
 import 'package:projects/util/no_glow_scroll.dart';
 
 import 'mingle_large_button.dart';
 
 class IngredientsList extends StatefulWidget {
-  const IngredientsList({Key? key}) : super(key: key);
+  ListItemsController<UsedIngredientDTO> controller;
+
+  IngredientsList({required this.controller});
 
   @override
   State<IngredientsList> createState() => _IngredientsListState();
 }
 
 class _IngredientsListState extends State<IngredientsList> {
-  List<UsedIngredient> _ingredients = [];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,9 +29,10 @@ class _IngredientsListState extends State<IngredientsList> {
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 itemBuilder: (context, index) {
-                  return IngredientIndicator(_ingredients[index]);
+                  return IngredientIndicator(widget.controller.items[index],
+                      onDelete: () => setState(() => widget.controller.items.removeAt(index)));
                 },
-                itemCount: _ingredients.length,
+                itemCount: widget.controller.items.length,
               ),
             ),
           ),
@@ -40,9 +42,9 @@ class _IngredientsListState extends State<IngredientsList> {
               label: "adicionar ingrediente",
               icon: Icons.add,
               onClick: () => showDialog(
-                context: context,
-                builder: (context) => NewIngredientDialog(_ingredients, update: () => setState(() {})),
-              ),
+                  context: context,
+                  builder: (context) => NewIngredientDialog(widget.controller.items, update: () => setState(() {})),
+                ),
               color: Colors.black26,
             ),
           )
