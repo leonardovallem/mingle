@@ -144,13 +144,19 @@ class _LoginPageState extends State<LoginPage> {
                   User? found = await findUser(user.email);
                   if (_isRegister) {
                     if (found != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário fornecido já existe")));
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(
+                        content: Text("Usuário fornecido já existe"),
+                        duration: Duration(seconds: 2),
+                      ));
                       return;
                     }
                     await createUserAndAuthenticate(user);
                   } else {
                     if (found == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário não encontrado")));
+                      ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(
+                        content: Text("Usuário não encontrado"),
+                        duration: Duration(seconds: 2),
+                      ));
                       return;
                     }
                     await findUserAndAuthenticate(user);
@@ -162,7 +168,10 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
 
-                  ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Credenciais incorretas")));
+                  ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(
+                    content: Text("Credenciais incorretas"),
+                    duration: Duration(seconds: 2),
+                  ));
                 },
               ),
               InkWell(

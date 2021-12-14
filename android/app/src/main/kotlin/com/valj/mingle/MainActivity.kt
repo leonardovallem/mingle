@@ -1,4 +1,4 @@
-package com.valj.projects
+package com.valj.mingle
 
 import io.flutter.embedding.android.FlutterActivity
 

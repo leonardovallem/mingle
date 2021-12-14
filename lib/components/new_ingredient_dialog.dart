@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projects/model/used_ingredient.dart';
-import 'package:projects/networking/api.dart';
 import 'package:projects/screens/add_ingredient_page.dart';
 
 class NewIngredientDialog extends StatelessWidget {

@@ -1,4 +1,4 @@
-# projects
+# mingle
 
 A new Flutter project.
 
