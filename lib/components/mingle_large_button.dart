@@ -23,18 +23,17 @@ class MingleLargeButton extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if(icon != null) Spacer(),
-                if(icon != null) Icon(icon),
-                if(icon != null) Spacer(),
-                if(icon != null) Spacer(),
+                if (icon != null) Spacer(),
+                if (icon != null) Icon(icon),
+                if (icon != null) Spacer(),
+                if (icon != null) Spacer(),
                 Text(label, style: const TextStyle(fontSize: 18.0)),
-                if(icon != null) Spacer(),
+                if (icon != null) Spacer(),
               ],
             ),
           ),

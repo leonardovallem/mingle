@@ -14,22 +14,19 @@ class RecipeVerticalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => RecipePage(recipe)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => RecipePage(recipe)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: DecoratedBox(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
-                  spreadRadius: 5,
-                  blurRadius: 20,
-                  offset: Offset(0, 3),
-                )
-              ]),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.25),
+              spreadRadius: 5,
+              blurRadius: 20,
+              offset: Offset(0, 3),
+            )
+          ]),
           child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -49,25 +46,21 @@ class RecipeVerticalCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child:
-                      Text(recipe.name, style: const TextStyle(fontSize: 24.0)),
+                  child: Text(recipe.name ?? "", style: const TextStyle(fontSize: 24.0)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(recipe.creatorId,
-                      style: const TextStyle(color: Colors.grey)),
+                  child: Text(recipe.creatorId ?? "", style: const TextStyle(color: Colors.grey)),
                 ),
                 if (Toggles.ratingsActive)
                   RatingBarIndicator(
                     itemSize: 32.0,
                     rating: 0,
-                    itemBuilder: (context, _) =>
-                        const Icon(Icons.star, color: Colors.amber),
+                    itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber),
                   )
               ],
             ),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(24.0)),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24.0)),
           ),
         ),
       ),

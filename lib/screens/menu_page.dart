@@ -22,7 +22,7 @@ class MenuPage extends StatelessWidget {
                   child: ListView(
                     children: [
                       ProfileListItem(snapshot.data == true),
-                      ListItem(
+                      if(snapshot.data == true) ListItem(
                         title: Text("Meus ingredientes"),
                         onClick: () => Navigator.pushNamed(context, "/my/ingredients"),
                       ),
@@ -39,10 +39,10 @@ class MenuPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.deepOrangeAccent),
                         onPressed: () {
                           signOut();
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, "/", (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
                         },
                         child: Text("Sair"),
                       ),
@@ -68,8 +68,7 @@ class ProfileListItem extends StatelessWidget {
         if (authenticated) {
           Navigator.pushNamed(context, "/profile");
         } else {
-          Navigator.pushNamedAndRemoveUntil(
-              context, "/login", (route) => false);
+          Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
         }
       },
     );

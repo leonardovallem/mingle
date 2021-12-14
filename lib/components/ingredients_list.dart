@@ -19,9 +19,7 @@ class _IngredientsListState extends State<IngredientsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0),
-          color: const Color(0x33AA4400)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: const Color(0x33AA4400)),
       child: Column(
         children: [
           Expanded(
@@ -43,8 +41,7 @@ class _IngredientsListState extends State<IngredientsList> {
               icon: Icons.add,
               onClick: () => showDialog(
                 context: context,
-                builder: (context) => NewIngredientDialog(_ingredients,
-                    update: () => setState(() {})),
+                builder: (context) => NewIngredientDialog(_ingredients, update: () => setState(() {})),
               ),
               color: Colors.black26,
             ),

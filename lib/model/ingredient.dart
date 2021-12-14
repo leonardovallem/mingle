@@ -1,13 +1,17 @@
-import 'package:projects/util/list_items_controller.dart';
+
+
+import 'package:projects/model/dto/ingredient_dto.dart';
 
 class Ingredient {
   String name;
 
   Ingredient(this.name);
 
+  IngredientDTO toDTO() => IngredientDTO(name: name);
+
   Map<String, dynamic> toMap() => {
-    "name": name,
-  };
+        "name": name,
+      };
 
   static Ingredient fromMap(Map<String, dynamic> ingredient) => Ingredient(ingredient["name"]);
 

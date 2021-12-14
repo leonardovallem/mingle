@@ -12,7 +12,6 @@ class CategoryChip extends StatefulWidget {
 }
 
 class _CategoryChipState extends State<CategoryChip> {
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,10 +21,8 @@ class _CategoryChipState extends State<CategoryChip> {
           setState(widget.onTap);
         },
         child: Chip(
-          label: Text(widget.label, style: TextStyle(
-              color: widget.active! ? const Color(0xFFFF7700) : const Color(0xFF6A515E),
-              fontWeight: FontWeight.w600
-          )),
+          label: Text(widget.label,
+              style: TextStyle(color: widget.active! ? const Color(0xFFFF7700) : const Color(0xFF6A515E), fontWeight: FontWeight.w600)),
           backgroundColor: widget.active! ? const Color(0x3FFA9620) : Colors.transparent,
         ),
         borderRadius: BorderRadius.circular(32.0),

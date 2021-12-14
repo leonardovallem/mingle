@@ -32,13 +32,20 @@ Future<User?> findUser(String email) async {
   return usersFound.isEmpty ? null : usersFound.first;
 }
 
+Future<String?> currentUsername() async {
+  var email = await currentUser();
+  if(email == null) return null;
+
+  return (await findUser(email))!.username;
+}
+
 Future<bool> findUserAndAuthenticate(User user) async {
   User? foundUser = await findUser(user.email);
-  if(foundUser == null) return false;
+  if (foundUser == null) return false;
 
   bool correctPassword = matchPasswords(user, foundUser.password);
 
-  if(!correctPassword) return false;
+  if (!correctPassword) return false;
 
   authenticate();
   return true;

@@ -85,8 +85,7 @@ class _MingleDropdownButtonState extends State<MingleDropdownButton> {
             ),
           ],
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -97,30 +96,27 @@ class _MingleDropdownButtonState extends State<MingleDropdownButton> {
                 ),
                 Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                  widget.label,
-                  style: const TextStyle(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.label,
+                    style: const TextStyle(
                       fontSize: 16.0,
                       color: Color(0xDDAB7979),
+                    ),
                   ),
-                ),
-                    )),
+                )),
               ],
             ),
           ),
         ),
-        decoration: BoxDecoration(
-            color: Color(0xFFFAFAFA),
-            borderRadius: BorderRadius.circular(24.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.35),
-                spreadRadius: 5,
-                blurRadius: 20,
-                offset: Offset(0, 3),
-              )
-            ]),
+        decoration: BoxDecoration(color: Color(0xFFFAFAFA), borderRadius: BorderRadius.circular(24.0), boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.35),
+            spreadRadius: 5,
+            blurRadius: 20,
+            offset: Offset(0, 3),
+          )
+        ]),
       ),
     );
   }

@@ -15,8 +15,7 @@ Future<void> saveIngredient(Ingredient ingredient) async {
 Future<Ingredient?> findIngredient(String ingredient) async {
   final db = await configureDatabase();
 
-  final List<Map<String, dynamic>> maps =
-      await db.query("ingredients", where: "name = ?", whereArgs: [ingredient]);
+  final List<Map<String, dynamic>> maps = await db.query("ingredients", where: "name = ?", whereArgs: [ingredient]);
   return maps.isEmpty ? null : Ingredient.fromMap(maps[0]);
 }
 

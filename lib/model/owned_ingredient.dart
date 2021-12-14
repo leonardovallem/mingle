@@ -1,3 +1,6 @@
+import 'package:projects/model/dto/ingredient_dto.dart';
+import 'package:projects/model/dto/registered_ingredient.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 import 'package:projects/model/used_ingredient.dart';
 
 class OwnedIngredient extends UsedIngredient {
@@ -10,6 +13,12 @@ class OwnedIngredient extends UsedIngredient {
     required this.owner,
   }) : super(ingredient: ingredient, amount: amount, measurementUnit: measurementUnit);
 
+  RegisteredIngredientDTO toDTO() => RegisteredIngredientDTO(owner: owner, usedIngredient: UsedIngredientDTO(
+    ingredient: IngredientDTO(name: ingredient),
+    quantity: amount,
+    unit: measurementUnit
+  ));
+
   Map<String, dynamic> toMap() => {
         "ingredient": ingredient,
         "amount": amount,
@@ -17,8 +26,7 @@ class OwnedIngredient extends UsedIngredient {
         "owner": owner,
       };
 
-  static OwnedIngredient fromMap(Map<String, dynamic> usedIngredient) =>
-      OwnedIngredient(
+  static OwnedIngredient fromMap(Map<String, dynamic> usedIngredient) => OwnedIngredient(
         ingredient: usedIngredient["ingredient"],
         amount: usedIngredient["amount"],
         measurementUnit: usedIngredient["measurement_unit"],

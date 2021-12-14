@@ -6,7 +6,12 @@ import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/dao/ingredients_dao.dart';
+import 'package:projects/dao/user_dao.dart';
+import 'package:projects/model/dto/ingredient_dto.dart';
+import 'package:projects/model/dto/recipe_dto.dart';
+import 'package:projects/model/dto/used_ingredient_dto.dart';
 import 'package:projects/model/ingredient.dart';
+import 'package:projects/networking/api.dart';
 import 'package:projects/util/list_items_controller.dart';
 import 'package:projects/util/no_glow_scroll.dart';
 
@@ -17,11 +22,22 @@ class AddRecipePage extends StatefulWidget {
 
 class _AddRecipePageState extends State<AddRecipePage> {
   final TextEditingController _nameController = TextEditingController();
-  final ListItemsController _preparationController = ListItemsController();
-  final ListItemsController _ingredientsController = ListItemsController();
+  final ListItemsController _preparationController = ListItemsController<String>();
+  final ListItemsController _ingredientsController = ListItemsController<IngredientDTO>();
 
   @override
   Widget build(BuildContext context) {
+    void addRecipe() async {
+      var recipe = RecipeDTO(
+        name: _nameController.text,
+        usedIngredients: _ingredientsController.items.cast<IngredientDTO>().map((ing) => UsedIngredientDTO(ingredient: ing)).toList(),
+        preparation: _preparationController.items.cast<String>(),
+        creatorId: await currentUsername(),
+      );
+      await RecipeAPI.insert(recipe);
+      Navigator.pop(context);
+    }
+
     List<String> _preparation = [];
 
     return MingleScaffold(
@@ -49,12 +65,14 @@ class _AddRecipePageState extends State<AddRecipePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CheckboxList(
+                              builder: (context) {
+                                return CheckboxList(
                                     title: "Ingredientes",
-                                    items: snapshot.data as List<Ingredient>,
+                                    items: (snapshot.data as List<Ingredient>).map((ing) => ing.toDTO()).toList(),
                                     controller: _ingredientsController,
                                     update: () => setState(() {}),
-                                  )),
+                                  );
+                              }),
                         );
                       },
                     ),
@@ -81,9 +99,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
               },
             ),
           )),
-          MingleLargeButton(label: "adicionar", onClick: () {
-            Navigator.pop(context);
-          })
+          MingleLargeButton(label: "adicionar", onClick: () => addRecipe())
         ],
       ),
     );

@@ -7,7 +7,7 @@ import 'ingredients_dao.dart';
 
 Future<void> saveUsedIngredient(UsedIngredient usedIngredient) async {
   Ingredient? ingredient = await findIngredient(usedIngredient.ingredient);
-  if(ingredient == null) await saveIngredient(Ingredient(usedIngredient.ingredient));
+  if (ingredient == null) await saveIngredient(Ingredient(usedIngredient.ingredient));
 
   final db = await configureDatabase();
 
@@ -18,14 +18,13 @@ Future<void> saveUsedIngredient(UsedIngredient usedIngredient) async {
   );
 }
 
-Future<UsedIngredient?> findEquivalentIngredient(
-    UsedIngredient usedIngredient) async {
+Future<UsedIngredient?> findEquivalentIngredient(UsedIngredient usedIngredient) async {
   final db = await configureDatabase();
 
   final List<Map<String, dynamic>> maps = await db.query("used_ingredients",
       where: "ingredient = ? AND "
-             "amount = ? AND "
-             "measurement_unit = ?",
+          "amount = ? AND "
+          "measurement_unit = ?",
       whereArgs: [
         usedIngredient.ingredient,
         usedIngredient.amount,
@@ -37,8 +36,7 @@ Future<UsedIngredient?> findEquivalentIngredient(
 Future<void> removeSavedUsedIngredient(String ingredient) async {
   final db = await configureDatabase();
 
-  await db.delete("used_ingredients",
-      where: "ingredient = ?", whereArgs: [ingredient]);
+  await db.delete("used_ingredients", where: "ingredient = ?", whereArgs: [ingredient]);
 }
 
 Future<List<UsedIngredient>> savedUsedIngredients() async {

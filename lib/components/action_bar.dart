@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects/components/diamond_button.dart';
-import 'package:projects/components/mingle_snackbar.dart';
+import 'package:projects/config/authentication.dart';
 
 import 'flat_text.dart';
 
@@ -8,17 +8,14 @@ class ActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      shape: const AutomaticNotchedShape(RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24.0),
-              topRight: Radius.circular(24.0)))),
+      shape: const AutomaticNotchedShape(
+          RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)))),
       child: Row(
         children: [
           const Spacer(),
           IconButton(
             onPressed: () => Navigator.pushNamed(context, "/menu"),
-            icon: const Icon(Icons.person_outline,
-                size: 32.0, color: Colors.grey),
+            icon: const Icon(Icons.person_outline, size: 32.0, color: Colors.grey),
           ),
           const Spacer(),
           Padding(
@@ -29,44 +26,57 @@ class ActionBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+          FutureBuilder(
+            future: isAuthenticated(),
+            builder: (context, snapshot) {
+              if(!snapshot.hasData) return Spacer();
+
+              return snapshot.data == true ? IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(onPressed: () {
-                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                              Navigator.pushNamed(context, "/add/ingredient");
-                            }, child: FlatText("Ingrediente")),
-                          )),
-                          Expanded(child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(onPressed: () {
-                              ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                              Navigator.pushNamed(context, "/add/recipe");
-                            }, child: FlatText("Receita")),
-                          )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                                          Navigator.pushNamed(context, "/add/ingredient");
+                                        },
+                                        child: FlatText("Ingrediente")),
+                                  )),
+                              Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                                          Navigator.pushNamed(context, "/add/recipe");
+                                        },
+                                        child: FlatText("Receita")),
+                                  )),
+                            ],
+                          ),
+                          Text("Deslize para baixo para cancelar")
                         ],
                       ),
-                      Text("Deslize para baixo para cancelar")
-                    ],
-                  ),
-                  duration: Duration(days: 999),
-                ));
-              },
-              icon: const Icon(
-                Icons.add,
-                size: 32.0,
-                color: Colors.grey,
-              )),
+                      duration: Duration(days: 999),
+                    ));
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                    size: 32.0,
+                    color: Colors.grey,
+                  )) : Spacer();
+            },
+          ),
           const Spacer(),
         ],
       ),

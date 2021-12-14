@@ -6,14 +6,12 @@ class UsedIngredientDTO {
   double quantity;
   String unit;
 
-  UsedIngredientDTO(
-      {required this.ingredient, required this.quantity, required this.unit});
+  UsedIngredientDTO({required this.ingredient, this.quantity = 0, this.unit = ""});
 
-  UsedIngredient parse() => UsedIngredient(
-      ingredient: ingredient.name, amount: quantity, measurementUnit: unit);
+  UsedIngredient parse() => UsedIngredient(ingredient: ingredient.name, amount: quantity, measurementUnit: unit);
 
   Map<String, dynamic> toMap() => {
-        "ingrediente": ingredient,
+        "ingrediente": ingredient.toMap(),
         "quantidade": quantity,
         "unidade": unit,
       };
@@ -21,7 +19,7 @@ class UsedIngredientDTO {
   static UsedIngredientDTO fromMap(Map<String, dynamic> recipe) {
     return UsedIngredientDTO(
       ingredient: IngredientDTO.fromMap(recipe["ingrediente"]),
-      quantity: (recipe["quantidade"] as int).toDouble(),
+      quantity: recipe["quantidade"] as double,
       unit: recipe["unidade"],
     );
   }

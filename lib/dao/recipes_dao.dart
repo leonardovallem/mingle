@@ -15,11 +15,7 @@ Future<void> saveRecipe(Recipe recipe) async {
 Future<void> removeSavedRecipe(String _id) async {
   final db = await configureDatabase();
 
-  await db.delete(
-    "recipes",
-    where : "_id = ?",
-    whereArgs: [_id]
-  );
+  await db.delete("recipes", where: "_id = ?", whereArgs: [_id]);
 }
 
 Future<List<Recipe>> savedRecipes() async {

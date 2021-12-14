@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 Future<void> saveOwnedIngredient(OwnedIngredient ownedIngredient) async {
   UsedIngredient? usedIngredient = await findEquivalentIngredient(ownedIngredient);
-  if(usedIngredient == null) await saveUsedIngredient(ownedIngredient.toUsedIngredient());
+  if (usedIngredient == null) await saveUsedIngredient(ownedIngredient.toUsedIngredient());
 
   final db = await configureDatabase();
 
@@ -20,8 +20,7 @@ Future<void> saveOwnedIngredient(OwnedIngredient ownedIngredient) async {
 Future<void> removeSavedOwnedIngredient(String ingredient) async {
   final db = await configureDatabase();
 
-  await db.delete("owned_ingredients",
-      where: "ingredient = ?", whereArgs: [ingredient]);
+  await db.delete("owned_ingredients", where: "ingredient = ?", whereArgs: [ingredient]);
 }
 
 Future<List<OwnedIngredient>> savedOwnedIngredients() async {

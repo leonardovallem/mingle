@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 
 class MingleTextInput extends StatelessWidget {
   String label;
-  Icon icon;
+  Icon? icon;
   TextInputType? keyboardType;
   TextEditingController? controller;
   FormFieldValidator? validator;
-  int? maxLines;
+  int maxLines;
   ValueChanged<String>? onSubmitted;
+  bool? obscureText;
 
   MingleTextInput({
     required this.label,
-    required this.icon,
+    this.icon,
     this.keyboardType,
     this.controller,
     this.validator,
-    this.maxLines,
+    this.maxLines = 1,
     this.onSubmitted,
+    this.obscureText
   });
 
   @override
@@ -26,7 +28,8 @@ class MingleTextInput extends StatelessWidget {
       child: Container(
         child: TextFormField(
           onFieldSubmitted: onSubmitted,
-          textInputAction: onSubmitted == null ?  TextInputAction.newline : TextInputAction.done,
+          obscureText: obscureText ?? false,
+          textInputAction: maxLines > 1 ? TextInputAction.newline : TextInputAction.done,
           maxLines: maxLines,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,

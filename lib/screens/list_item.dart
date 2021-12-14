@@ -14,10 +14,7 @@ class ListItem extends StatelessWidget {
         onTap: onClick,
         child: Container(
           child: ListTile(title: title),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: Color(0xFFF0F0F0)
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: Color(0xFFF0F0F0)),
         ),
       ),
     );

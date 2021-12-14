@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                       icon: Icon(Icons.account_circle),
                       controller: _usernameController,
                       validator: (value) {
-                        if(!_isRegister) return null;
+                        if (!_isRegister) return null;
 
                         if (value.length < 5) {
                           return "O username precisa conter ao menos 5 digitos";
@@ -74,8 +74,9 @@ class _LoginPageState extends State<LoginPage> {
                     label: "Senha",
                     icon: Icon(Icons.password),
                     controller: _passwordController,
+                    obscureText: true,
                     validator: (value) {
-                      if(!_isRegister) return null;
+                      if (!_isRegister) return null;
 
                       if (value.length < 7) {
                         return "A senha precisa conter ao menos 7 dígitos";
@@ -87,8 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                       for (int i = 0; i < value.length; i++) {
                         if (!containsLetter) {
                           for (int n = 0; n < 26; n++) {
-                            if (String.fromCharCode(value.codeUnitAt(i)) ==
-                                String.fromCharCode('a'.codeUnitAt(0) + n)) {
+                            if (String.fromCharCode(value.codeUnitAt(i)) == String.fromCharCode('a'.codeUnitAt(0) + n)) {
                               containsLetter = true;
                               break;
                             }
@@ -96,8 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         if (!containsNumber) {
                           for (int n = 0; n < 10; n++) {
-                            if (String.fromCharCode(value.codeUnitAt(i)) ==
-                                n.toString()) {
+                            if (String.fromCharCode(value.codeUnitAt(i)) == n.toString()) {
                               containsNumber = true;
                               break;
                             }
@@ -123,9 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(_isRegister
-                        ? "Já tem uma conta?"
-                        : "Ainda não tem uma conta?"),
+                    child: Text(_isRegister ? "Já tem uma conta?" : "Ainda não tem uma conta?"),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -145,23 +142,23 @@ class _LoginPageState extends State<LoginPage> {
                   );
 
                   User? found = await findUser(user.email);
-                  if(_isRegister) {
-                    if(found != null) {
+                  if (_isRegister) {
+                    if (found != null) {
                       ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário fornecido já existe")));
                       return;
                     }
                     await createUserAndAuthenticate(user);
                   } else {
-                    if(found == null) {
+                    if (found == null) {
                       ScaffoldMessenger.of(context).showSnackBar(MingleSnackbar(content: Text("Usuário não encontrado")));
                       return;
                     }
                     await findUserAndAuthenticate(user);
                   }
 
-                  if(await isAuthenticated()) {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/home", (route) => false);
+                  if (await isAuthenticated()) {
+                    await saveUser(user.email);
+                    Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
                     return;
                   }
 
@@ -169,8 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               InkWell(
-                onTap: () => Navigator.pushNamedAndRemoveUntil(
-                    context, "/home", (route) => false),
+                onTap: () => Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false),
                 child: Padding(
                   padding: const EdgeInsets.all(32.0),
                   child: Row(
@@ -180,9 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text("ou "),
                       Text(
                         "continuar sem uma conta",
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.w600),
+                        style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),

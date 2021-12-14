@@ -36,18 +36,12 @@ class _CheckboxListButtonState<T> extends State<CheckboxListButton<T>> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
-                child: Text(widget.quantity.toString(),
-                    style: const TextStyle(
-                        color: Colors.pink,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400)),
+                child:
+                    Text(widget.quantity.toString(), style: const TextStyle(color: Colors.pink, fontSize: 24, fontWeight: FontWeight.w400)),
               ),
               Text(
                 widget.matchingLabel,
-                style: const TextStyle(
-                    color: Color(0xDDAB7979),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                style: const TextStyle(color: Color(0xDDAB7979), fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -55,8 +49,7 @@ class _CheckboxListButtonState<T> extends State<CheckboxListButton<T>> {
               padding: EdgeInsets.all(32),
               primary: Color(0xFFFAFAFA),
               shadowColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
         ),
       ),
     );

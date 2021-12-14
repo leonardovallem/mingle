@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projects/components/flat_text.dart';
 import 'package:projects/components/mingle_scaffold.dart';
+import 'package:projects/config/toggles.dart';
 import 'package:projects/dao/owned_ingredients_dao.dart';
 import 'package:projects/model/owned_ingredient.dart';
 
@@ -16,8 +17,8 @@ class MyIngredientsPage extends StatelessWidget {
             return LinearProgressIndicator();
           }
 
-          List<OwnedIngredient> ingredients =
-              snapshot.data as List<OwnedIngredient>;
+          List<OwnedIngredient> ingredients = snapshot.data as List<OwnedIngredient>;
+
           if (ingredients.isEmpty) {
             return const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 192.0),
@@ -37,8 +38,7 @@ class MyIngredientsPage extends StatelessWidget {
                 OwnedIngredient ingredient = ingredients[index];
                 return ListTile(
                   title: FlatText(ingredient.ingredient),
-                  subtitle:
-                      Text("${ingredient.amount}${ingredient.measurementUnit}"),
+                  subtitle: Toggles.partitionedIngredientsActive ? Text("${ingredient.amount}${ingredient.measurementUnit}") : null,
                 );
               },
               itemCount: ingredients.length);

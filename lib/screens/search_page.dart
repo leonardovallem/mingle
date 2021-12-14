@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:projects/components/ingredients_list.dart';
 import 'package:projects/components/mingle_large_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
+import 'package:projects/model/dto/recipe_dto.dart';
+import 'package:projects/networking/api.dart';
+import 'package:projects/screens/all_recipes_page.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -16,36 +19,40 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<List<RecipeDTO>> handleSearch() async {
+      return _searchMethod == SearchMethod.useOwnIngredients
+          ? RecipeAPI.fetchFromIngredients()
+          : RecipeAPI.fetchFromIngredients(); // TODO alterar
+    }
+
     return MingleScaffold(
       hideActionBar: true,
       title: "Encontrar receitas",
       body: Padding(
-        padding: const EdgeInsets.only(top: 80.0),
+        padding: const EdgeInsets.only(top: 100.0),
         child: Column(
           children: [
             SearchOption(
               title: Text("usar meus ingredientes cadastrados"),
-              onChanged: (newMethod) =>
-                  setState(() => _searchMethod = newMethod),
+              onChanged: (newMethod) => setState(() => _searchMethod = newMethod),
               value: SearchMethod.useOwnIngredients,
               groupValue: _searchMethod!,
             ),
             SearchOption(
               title: Text("inserir ingredientes a serem usados"),
-              onChanged: (newMethod) =>
-                  setState(() => _searchMethod = newMethod),
+              onChanged: (newMethod) => setState(() => _searchMethod = newMethod),
               value: SearchMethod.insertNewIngredients,
               groupValue: _searchMethod!,
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: _searchMethod == SearchMethod.insertNewIngredients
-                    ? IngredientsList()
-                    : null,
+                child: _searchMethod == SearchMethod.insertNewIngredients ? IngredientsList() : null,
               ),
             ),
-            MingleLargeButton(label: "Buscar", onClick: () {})
+            MingleLargeButton(
+                label: "Buscar",
+                onClick: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllRecipesPage(future: handleSearch()))))
           ],
         ),
       ),
@@ -71,9 +78,7 @@ class SearchOption extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
       child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.0),
-            color: Color(0xFFDADADA)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: Color(0xFFDADADA)),
         child: InkWell(
           onTap: () => onChanged(value),
           child: Padding(

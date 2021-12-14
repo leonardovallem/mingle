@@ -22,6 +22,16 @@ void signOut() async {
   prefs.setBool("authenticated", false);
 }
 
+Future<void> saveUser(String email) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("user", email);
+}
+
+Future<String?> currentUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString("user");
+}
+
 Future<bool> isAuthenticated() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? auth = prefs.getBool("authenticated");

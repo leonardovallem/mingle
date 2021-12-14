@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projects/config/toggles.dart';
 import 'package:projects/model/used_ingredient.dart';
 
 class IngredientIndicator extends StatelessWidget {
@@ -35,7 +36,7 @@ class IngredientIndicator extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+          if(Toggles.partitionedIngredientsActive) Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Color(0xFFE0E0E0),

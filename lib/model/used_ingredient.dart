@@ -1,4 +1,4 @@
-import 'package:projects/model/dto/used_ingredient_dto.dart';
+
 
 class UsedIngredient {
   String ingredient;
@@ -17,8 +17,7 @@ class UsedIngredient {
         "measurement_unit": measurementUnit,
       };
 
-  static UsedIngredient fromMap(Map<String, dynamic> usedIngredient) =>
-      UsedIngredient(
+  static UsedIngredient fromMap(Map<String, dynamic> usedIngredient) => UsedIngredient(
         ingredient: usedIngredient["ingredient"],
         amount: usedIngredient["amount"],
         measurementUnit: usedIngredient["measurement_unit"],
