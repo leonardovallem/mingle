@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CheckboxListButton<T> extends StatefulWidget {
+class CheckboxListButton extends StatefulWidget {
   int quantity;
   String matchingLabel;
   VoidCallback onPressed;
@@ -12,10 +12,10 @@ class CheckboxListButton<T> extends StatefulWidget {
   });
 
   @override
-  State<CheckboxListButton<T>> createState() => _CheckboxListButtonState<T>();
+  State<CheckboxListButton> createState() => _CheckboxListButtonState();
 }
 
-class _CheckboxListButtonState<T> extends State<CheckboxListButton<T>> {
+class _CheckboxListButtonState extends State<CheckboxListButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,7 +30,7 @@ class _CheckboxListButtonState<T> extends State<CheckboxListButton<T>> {
           )
         ]),
         child: ElevatedButton(
-          onPressed: widget.onPressed,
+          onPressed: () => setState(widget.onPressed),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

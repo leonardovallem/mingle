@@ -92,6 +92,13 @@ class IngredientAPI {
     return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
+  static Future<List<IngredientDTO>> fetchAllNotFromCurrentUser() async {
+    var all = await fetchAll();
+    var user = await fetchFromCurrentUser();
+
+    return all.where((ing) => !user.contains(ing)).toList();
+  }
+
   static Future<List<IngredientDTO>> fetchFromCurrentUser() async {
     var user = await currentUsername();
     final response = await get(Uri.parse(join(BASE_URI, INGREDIENTS, "?user=$user")));

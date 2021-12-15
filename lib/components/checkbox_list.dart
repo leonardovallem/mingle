@@ -13,6 +13,7 @@ class CheckboxList<T> extends StatefulWidget {
   bool canAdd;
   String? addLabel;
   ListItemsController? controller;
+  ListItemsController? searchedItemsController;
   VoidCallback? update;
 
   CheckboxList({
@@ -21,6 +22,7 @@ class CheckboxList<T> extends StatefulWidget {
     this.canAdd = false,
     this.addLabel,
     this.controller,
+    this.searchedItemsController,
     this.update,
   });
 

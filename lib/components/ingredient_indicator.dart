@@ -49,7 +49,7 @@ class IngredientIndicator extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
             ),
-          IconButton(onPressed: onDelete, icon: Icon(Icons.remove, color: Colors.red))
+          if(onDelete != null) IconButton(onPressed: onDelete, icon: Icon(Icons.remove, color: Colors.red))
         ],
       ),
     );

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projects/components/checkbox_list_button.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/model/dto/ingredient_dto.dart';
-import 'package:projects/model/dto/used_ingredient_dto.dart';
 import 'package:projects/networking/api.dart';
 import 'package:projects/util/list_items_controller.dart';
 
@@ -20,7 +18,7 @@ class SearchIngredients extends StatefulWidget {
 }
 
 class _SearchIngredientsState extends State<SearchIngredients> {
-  Future future = IngredientAPI.fetchAll();
+  Future future = IngredientAPI.fetchAllNotFromCurrentUser();
   String search = "";
   bool showAddButton = true;
 
@@ -34,14 +32,14 @@ class _SearchIngredientsState extends State<SearchIngredients> {
           children: [
             MingleTextInput(
               label: "Ingrediente",
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               maxLines: 1,
               onSubmitted: (value) {
                 setState(() {
                   search = value;
 
                   if (value.isEmpty) {
-                    future = IngredientAPI.fetchAll();
+                    future = IngredientAPI.fetchAllNotFromCurrentUser();
                     return;
                   }
 
@@ -49,46 +47,48 @@ class _SearchIngredientsState extends State<SearchIngredients> {
                 });
               },
             ),
-            CheckboxListButton(
-              quantity: widget.controller.items.length,
-              matchingLabel: "ingredientes selecionados",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CheckboxList(
-                            title: "Selecionados",
-                            items: widget.controller.items,
-                            controller: widget.controller,
-                            update: () => setState(() {}),
-                          )),
-                );
-              },
-            ),
+            //  CheckboxListButton(
+            //   quantity: _selected,
+            //   matchingLabel: "ingredientes selecionados",
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => CheckboxList(
+            //                 title: "Selecionados",
+            //                 items: widget.controller.items,
+            //                 controller: widget.controller,
+            //                 update: () => setState(() => _selected = widget.controller.items.length),
+            //               )),
+            //     );
+            //   },
+            // ),
             Expanded(
               child: FutureBuilder(
                   future: future,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<IngredientDTO> fetchedIngredients = snapshot.data as List<IngredientDTO>;
+                      List<IngredientDTO> shownIngredients = sortIngredients(fetchedIngredients);
 
                       if (fetchedIngredients.isNotEmpty) {
                         return ListView.builder(
-                            itemCount: fetchedIngredients.length,
+                            itemCount: shownIngredients.length,
                             itemBuilder: (context, position) => Card(
                                   child: CheckboxListItem(
-                                      title: fetchedIngredients[position].name,
-                                      value: widget.controller.items.any((element) => element == fetchedIngredients[position]),
+                                      title: shownIngredients[position].name,
+                                      value: widget.controller.items.any((element) => element == shownIngredients[position]),
                                       onChanged: (value) {
-                                        bool contains = widget.controller.items.any((value) => fetchedIngredients[position] == value);
+                                        setState(() => shownIngredients = sortIngredients(fetchedIngredients));
+                                        bool contains = widget.controller.items.any((value) => shownIngredients[position] == value);
 
                                         if (contains && value) return;
                                         if (!contains && !value) return;
 
                                         if (value)
-                                          widget.controller.items.add(fetchedIngredients[position]);
+                                          widget.controller.items.add(shownIngredients[position]);
                                         else
-                                          widget.controller.items.remove(fetchedIngredients[position]);
+                                          widget.controller.items.remove(shownIngredients[position]);
                                       }),
                                 ));
                       }
@@ -128,12 +128,9 @@ class _SearchIngredientsState extends State<SearchIngredients> {
                                   ),
                                   if (showAddButton)
                                     DiamondButton(
-                                        icon: Icon(Icons.add),
-                                        onClick: () {
-                                          if (search.isEmpty) return;
-                                          IngredientAPI.insert(search);
-                                          setState(() => showAddButton = false);
-                                        }),
+                                      icon: const Icon(Icons.add),
+                                      onClick: () => Navigator.pushNamed(context, "/add/ingredient"),
+                                    ),
                                 ],
                               ),
                             )
@@ -145,5 +142,11 @@ class _SearchIngredientsState extends State<SearchIngredients> {
         ),
       ),
     );
+  }
+
+  List<IngredientDTO> sortIngredients(List<IngredientDTO> fetchedIngredients) {
+    List<IngredientDTO> shownIngredients = fetchedIngredients.where((ing) => widget.controller.items.contains(ing)).toList();
+    shownIngredients.addAll(fetchedIngredients.where((ing) => !widget.controller.items.contains(ing)).toList());
+    return shownIngredients;
   }
 }

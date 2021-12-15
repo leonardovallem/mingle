@@ -24,16 +24,21 @@ class _AddRecipePageState extends State<AddRecipePage> {
   final TextEditingController _nameController = TextEditingController();
   final ListItemsController _preparationController = ListItemsController<String>();
   final ListItemsController _ingredientsController = ListItemsController<IngredientDTO>();
+  final ListItemsController _searchedIngredientsController = ListItemsController<IngredientDTO>();
 
   String? _file;
   String _displayMessage = "escolher imagem";
 
   @override
   Widget build(BuildContext context) {
+    List<IngredientDTO> usedIngredients = [];
+    usedIngredients.addAll(_ingredientsController.items.cast<IngredientDTO>());
+    usedIngredients.addAll(_searchedIngredientsController.items.cast<IngredientDTO>());
+
     void addRecipe() async {
       var recipe = RecipeDTO(
         name: _nameController.text,
-        usedIngredients: _ingredientsController.items.cast<IngredientDTO>().map((ing) => UsedIngredientDTO(ingredient: ing)).toList(),
+        usedIngredients: usedIngredients.map((ing) => UsedIngredientDTO(ingredient: ing)).toList(),
         preparation: _preparationController.items.cast<String>(),
         creatorId: await currentUsername(),
         picture: _file,
@@ -111,6 +116,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                               title: "Ingredientes",
                               items: snapshot.data as List<IngredientDTO>,
                               controller: _ingredientsController,
+                              searchedItemsController: _searchedIngredientsController,
                               update: () => setState(() {}),
                             );
                           }),
