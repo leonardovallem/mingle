@@ -18,7 +18,7 @@ class MyIngredientsPage extends StatelessWidget {
       title: "Meus ingredientes",
       hideActionBar: true,
       body: FutureBuilder(
-        future: useLocal ? savedOwnedIngredients() : IngredientAPI.fetchFromCurrentUser(),
+        future: useLocal ? savedOwnedIngredients() : RegisteredIngredientAPI.fetchFromCurrentUser(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();

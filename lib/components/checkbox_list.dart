@@ -31,8 +31,6 @@ class CheckboxList<T> extends StatefulWidget {
 }
 
 class _CheckboxListState<T> extends State<CheckboxList> {
-  var searchController = ListItemsController<T>();
-
   @override
   Widget build(BuildContext context) {
     return MingleScaffold(
@@ -45,7 +43,7 @@ class _CheckboxListState<T> extends State<CheckboxList> {
               onPressed: () async {
                 if (!widget.canAdd) {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchIngredients(controller: searchController),
+                    builder: (context) => SearchIngredients(controller: widget.searchedItemsController!),
                   ));
 
                   return;

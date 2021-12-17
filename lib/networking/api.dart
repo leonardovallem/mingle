@@ -8,7 +8,7 @@ import 'package:projects/model/dto/recipe_dto.dart';
 import 'package:projects/model/dto/registered_ingredient.dart';
 import 'package:projects/model/dto/used_ingredient_dto.dart';
 
-const BASE_URI = "http://192.168.0.106:8080";
+const BASE_URI = "https://mingle-api.herokuapp.com";
 const RECIPES = "receitas";
 const INGREDIENTS = "ingredientes";
 const REGISTERED_INGREDIENT = "ingrediente-cadastrado";
@@ -21,7 +21,7 @@ class RecipeAPI {
 
     if (response.statusCode != 200) return null;
 
-    return RecipeDTO.fromMap(jsonDecode(response.body));
+    return RecipeDTO.fromMap(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
   static Future<List<RecipeDTO>> fetchAll() async {
@@ -29,7 +29,7 @@ class RecipeAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
+    List<dynamic> recipes = jsonDecode(utf8.decode(response.bodyBytes));
     return distinct(recipes);
   }
 
@@ -38,7 +38,7 @@ class RecipeAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
+    List<dynamic> recipes = jsonDecode(utf8.decode(response.bodyBytes));
     return distinct(recipes);
   }
 
@@ -51,7 +51,7 @@ class RecipeAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> recipes = jsonDecode(response.body);
+    List<dynamic> recipes = jsonDecode(utf8.decode(response.bodyBytes));
     return distinct(recipes);
   }
 
@@ -80,7 +80,7 @@ class IngredientAPI {
 
     if (response.statusCode != 200) return null;
 
-    return IngredientDTO.fromMap(jsonDecode(response.body));
+    return IngredientDTO.fromMap(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
   static Future<List<IngredientDTO>> fetchAll() async {
@@ -88,24 +88,7 @@ class IngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> ingredients = jsonDecode(response.body);
-    return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
-  }
-
-  static Future<List<IngredientDTO>> fetchAllNotFromCurrentUser() async {
-    var all = await fetchAll();
-    var user = await fetchFromCurrentUser();
-
-    return all.where((ing) => !user.contains(ing)).toList();
-  }
-
-  static Future<List<IngredientDTO>> fetchFromCurrentUser() async {
-    var user = await currentUsername();
-    final response = await get(Uri.parse(join(BASE_URI, INGREDIENTS, "?user=$user")));
-
-    if (response.statusCode != 200) return [];
-
-    List<dynamic> ingredients = jsonDecode(response.body);
+    List<dynamic> ingredients = jsonDecode(utf8.decode(response.bodyBytes));
     return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
@@ -114,7 +97,7 @@ class IngredientAPI {
 
     if (response.statusCode != 200) return [];
 
-    List<dynamic> ingredients = jsonDecode(response.body);
+    List<dynamic> ingredients = jsonDecode(utf8.decode(response.bodyBytes));
     return ingredients.map((object) => IngredientDTO.fromMap(object)).toList();
   }
 
@@ -124,6 +107,16 @@ class IngredientAPI {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"nome": name}),
     );
+  }
+
+  static Future<List<IngredientDTO>> fetchAllNotFromCurrentUser() async {
+    var user = await currentUsername();
+    final response = await get(Uri.parse(join(BASE_URI, REGISTERED_INGREDIENT, "except", user)));
+
+    if (response.statusCode != 200) return [];
+
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => UsedIngredientDTO.fromMap(object).ingredient).toList();
   }
 }
 
@@ -162,5 +155,15 @@ class RegisteredIngredientAPI {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(registeredIngredient.toMap()),
     );
+  }
+
+  static Future<List<IngredientDTO>> fetchFromCurrentUser() async {
+    var user = await currentUsername();
+    final response = await get(Uri.parse(join(BASE_URI, REGISTERED_INGREDIENT, user)));
+
+    if (response.statusCode != 200) return [];
+
+    List<dynamic> ingredients = jsonDecode(response.body);
+    return ingredients.map((object) => UsedIngredientDTO.fromMap(object).ingredient).toList();
   }
 }

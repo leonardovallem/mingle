@@ -31,11 +31,12 @@ class _AddRecipePageState extends State<AddRecipePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<IngredientDTO> usedIngredients = [];
-    usedIngredients.addAll(_ingredientsController.items.cast<IngredientDTO>());
-    usedIngredients.addAll(_searchedIngredientsController.items.cast<IngredientDTO>());
 
     void addRecipe() async {
+      List<IngredientDTO> usedIngredients = [];
+      usedIngredients.addAll(_ingredientsController.items.cast<IngredientDTO>());
+      usedIngredients.addAll(_searchedIngredientsController.items.cast<IngredientDTO>());
+
       var recipe = RecipeDTO(
         name: _nameController.text,
         usedIngredients: usedIngredients.map((ing) => UsedIngredientDTO(ingredient: ing)).toList(),
@@ -58,7 +59,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
               child: ScrollConfiguration(
             behavior: NoGlowScroll(),
             child: FutureBuilder(
-              future: IngredientAPI.fetchFromCurrentUser(),
+              future: RegisteredIngredientAPI.fetchFromCurrentUser(),
               builder: (context, snapshot) {
                 return ListView(
                   children: [
@@ -106,7 +107,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
                       controller: _nameController,
                     ),
                     CheckboxListButton(
-                      quantity: _ingredientsController.items.length,
+                      quantity: _ingredientsController.items.length + _searchedIngredientsController.items.length,
                       matchingLabel: "ingredientes selecionados",
                       onPressed: () {
                         Navigator.push(

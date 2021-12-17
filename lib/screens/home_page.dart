@@ -7,7 +7,6 @@ import 'package:projects/components/category_picker.dart';
 import 'package:projects/components/mingle_scaffold.dart';
 import 'package:projects/components/mingle_text_input.dart';
 import 'package:projects/components/recipe_vertical_card.dart';
-import 'package:projects/components/vertical_center.dart';
 import 'package:projects/config/toggles.dart';
 import 'package:projects/model/dto/recipe_dto.dart';
 import 'package:projects/networking/api.dart';
@@ -93,10 +92,8 @@ class _PortraitHomeLayoutState extends State<PortraitHomeLayout> {
           MingleTextInput(
             label: "Pesquisar",
             icon: Icon(Icons.search),
-            onSubmitted: (value) => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              print(value);
-              return AllRecipesPage(search: true, searchFor: value);
-            })),
+            onSubmitted: (value) =>
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllRecipesPage(search: true, searchFor: value))),
           ),
           if (Toggles.categoriesActive)
             SizedBox(
@@ -113,12 +110,43 @@ class _PortraitHomeLayoutState extends State<PortraitHomeLayout> {
                     List<RecipeDTO> fetchedRecipes = snapshot.data as List<RecipeDTO>;
 
                     if (fetchedRecipes.isNotEmpty) {
+                      var _scrollController = ScrollController();
+                      var count = min(fetchedRecipes.length, 10) + 1;
+
                       return ListView.builder(
-                        itemCount: min(fetchedRecipes.length, 10),
+                        itemCount: count,
                         clipBehavior: Clip.none,
                         scrollDirection: Axis.horizontal,
+                        controller: _scrollController,
                         itemBuilder: (context, index) {
-                          return index < 9 ? RecipeVerticalCard(recipe: fetchedRecipes[index]) : ListAllRecipesCard();
+                          if (index < count - 1) return RecipeVerticalCard(recipe: fetchedRecipes[index]);
+
+                          return index == 10
+                              ? ListAllRecipesCard()
+                              : Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 128),
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.25),
+                                        spreadRadius: 5,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 3),
+                                      )
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                child: InkWell(
+                                  onTap: () => setState(() {
+                                    _scrollController.animateTo(0, duration: Duration(seconds: 1), curve: Curves.easeInOutQuint);
+                                  }),
+                                  child: const Padding(
+                                      padding: EdgeInsets.all(32),
+                                      child: Icon(Icons.restart_alt, color: Colors.black54, size: 32),
+                                    ),
+                                ),
+                              );
                         },
                       );
                     }
@@ -135,12 +163,17 @@ class _PortraitHomeLayoutState extends State<PortraitHomeLayout> {
 
                   return Padding(
                       padding: const EdgeInsets.all(32.0),
-                      child: VerticalCenter(
-                          child: const Text(
-                        "Nenhuma receita encontrada",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 32, color: Colors.black26),
-                      )));
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Nenhuma receita encontrada",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 32, color: Colors.black26),
+                          ),
+                          OutlinedButton(onPressed: () => setState(() {}), child: Icon(Icons.restart_alt))
+                        ],
+                      ));
                 },
               ),
             ),

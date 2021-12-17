@@ -29,52 +29,61 @@ class ActionBar extends StatelessWidget {
           FutureBuilder(
             future: isAuthenticated(),
             builder: (context, snapshot) {
-              if(!snapshot.hasData) return Spacer();
+              if (!snapshot.hasData) return Spacer();
 
-              return snapshot.data == true ? IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                                          Navigator.pushNamed(context, "/add/ingredient");
-                                        },
-                                        child: FlatText("Ingrediente")),
-                                  )),
-                              Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                                          Navigator.pushNamed(context, "/add/recipe");
-                                        },
-                                        child: FlatText("Receita")),
-                                  )),
-                            ],
+              return snapshot.data == true
+                  ? IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Container(
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.only(left: 16.0, right: 8, top: 16, bottom: 16),
+                                  child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: BorderSide(color: Colors.pink),
+                                          padding: EdgeInsets.symmetric(vertical: 16),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context, "/add/ingredient");
+                                      },
+                                      child: FlatText("Ingrediente")),
+                                )),
+                                Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8, right: 16, top: 16, bottom: 16),
+                                  child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(color: Colors.pink),
+                                          padding: EdgeInsets.symmetric(vertical: 16),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context, "/add/recipe");
+                                      },
+                                      child: FlatText("Receita")),
+                                )),
+                              ],
+                            ),
                           ),
-                          Text("Deslize para baixo para cancelar")
-                        ],
-                      ),
-                      duration: Duration(days: 999),
-                    ));
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                    size: 32.0,
-                    color: Colors.grey,
-                  )) : Spacer();
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                        size: 32.0,
+                        color: Colors.grey,
+                      ))
+                  : Spacer();
             },
           ),
           const Spacer(),
